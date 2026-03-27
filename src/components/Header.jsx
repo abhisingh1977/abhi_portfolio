@@ -32,21 +32,27 @@ const Header = ({ contactFormOpen, setContactFormOpen }) => {
         setFormStatus('');
 
         try {
-            const res = await fetch('http://localhost:5000/api/contact', {
+            const res = await fetch('https://api.web3forms.com/submit', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
+                body: JSON.stringify({
+                    access_key: '7569ef37-8d1e-497e-9a49-4c665e0ac3ae',
+                    name: formData.name,
+                    email: formData.email,
+                    message: formData.message,
+                    subject: `📩 New Contact from ${formData.name} — Portfolio`,
+                }),
             });
 
             const data = await res.json();
 
             if (data.success) {
                 setFormStatus('success');
-                setStatusMessage(data.message);
+                setStatusMessage('Message sent successfully!');
                 setFormData({ name: '', email: '', message: '' });
             } else {
                 setFormStatus('error');
-                setStatusMessage(data.message);
+                setStatusMessage(data.message || 'Failed to send message.');
             }
         } catch (error) {
             setFormStatus('error');
