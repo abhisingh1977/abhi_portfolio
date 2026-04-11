@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 html {
-  scroll-behavior: smooth;
   cursor: none; /* Hide default cursor */
 }
 
@@ -33,7 +32,6 @@ section {
   position: relative;
   width: 100%;
   min-height: 100vh;
-  overflow: hidden;
 }
 
 
@@ -44,6 +42,12 @@ section {
 
 .pin-spacer {
   height: 200vh;
+}
+
+/* Spline 3D wrapper - optimize performance */
+.spline-wrapper {
+  will-change: transform;
+  contain: content;
 }
 
 

@@ -1,9 +1,31 @@
+import { lazy, Suspense, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import Spline from "@splinetool/react-spline";
 import { FiLinkedin, FiFileText } from "react-icons/fi";
+
+const Spline = lazy(() => import("@splinetool/react-spline"));
 
 
 const HeroSection = () => {
+    const splineWrapperRef = useRef(null);
+
+    // Block only wheel events from reaching the Spline canvas
+    // so page scrolling works, but hover/click interactivity is preserved
+    useEffect(() => {
+        const wrapper = splineWrapperRef.current;
+        if (!wrapper) return;
+
+        const handleWheel = (e) => {
+            e.stopPropagation();
+        };
+
+        // Capture phase: intercept wheel before it reaches the canvas
+        wrapper.addEventListener("wheel", handleWheel, { capture: true, passive: true });
+
+        return () => {
+            wrapper.removeEventListener("wheel", handleWheel, { capture: true, passive: true });
+        };
+    }, []);
+
     return (
         <section id="home" className="h-screen bg-gradient-to-b from-violet-900 to-black flex xl:flex-row flex-col-reverse items-center justify-between lg:px-24 px-10 relative overflow-hidden">
 
@@ -65,9 +87,13 @@ const HeroSection = () => {
                 </motion.div>
             </div>
 
-            {/* right section  */}
+            {/* right section - 3D Spline */}
 
-            <Spline className="absolute xl:right-[-28%] right-0 top-[-20%] lg:top-0 scale-125" scene="https://prod.spline.design/mxjrcpP1sHiIBoB0/scene.splinecode" />
+            <div ref={splineWrapperRef} className="absolute xl:right-[-28%] right-0 top-[-20%] lg:top-0 w-full h-full scale-125 spline-wrapper">
+                <Suspense fallback={<div className="w-full h-full" />}>
+                    <Spline scene="https://prod.spline.design/mxjrcpP1sHiIBoB0/scene.splinecode" />
+                </Suspense>
+            </div>
 
 
         </section>

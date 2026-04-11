@@ -37,12 +37,12 @@ const ContactSection = ({ onContactClick }) => {
             scrollTrigger: {
                 trigger: sectionRef.current,
                 start: "top top",
-                end: "+=200%",
+                end: "+=150%",
                 pin: true,
-                scrub: 0.5,
+                pinSpacing: true,
+                scrub: 0.3,
                 anticipatePin: 1,
                 fastScrollEnd: true,
-                preventOverlaps: true,
                 invalidateOnRefresh: true,
             }
         })
@@ -104,7 +104,7 @@ const ContactSection = ({ onContactClick }) => {
     return (
         <section
             ref={sectionRef}
-            className="flex items-center justify-center bg-black relative" id="contact" style={{ overscrollBehavior: "none" }}>
+            className="flex items-center justify-center bg-black relative h-screen overflow-hidden" id="contact">
 
 
             {/* simple circle with minimal nesting */}
